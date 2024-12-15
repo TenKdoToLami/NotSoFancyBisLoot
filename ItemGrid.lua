@@ -57,6 +57,31 @@ function NotSoFancyBisLoot.setupWindow(option, open)
 end
 
 
+function NotSoFancyBisLoot.createItemButton(window, itemLink, col, row, buttonSize, spacing, offsetX, offsetY)
+    -- Create a button for the item
+    local button = CreateFrame("Button", nil, window)
+    button:SetSize(buttonSize, buttonSize)  -- Set the button size
+    button:SetPoint("TOPLEFT", window, "TOPLEFT", offsetX + (col - 1) * (buttonSize + spacing), offsetY - (row - 1) * (buttonSize + spacing))
+
+    -- Set the button icon using the item texture
+    local icon = button:CreateTexture(nil, "ARTWORK")
+    icon:SetAllPoints(button)  -- Make the icon fill the button
+    icon:SetTexture(GetItemIcon(itemLink))  -- Set the item's icon
+
+    -- Tooltip handling on mouse enter (when hovering over the button)
+    button:SetScript("OnEnter", function()
+        GameTooltip:SetOwner(button, "ANCHOR_CURSOR_RIGHT")
+        GameTooltip:SetHyperlink(itemLink)
+        GameTooltip:Show()
+    end)
+
+    -- Hide the tooltip on mouse leave
+    button:SetScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
+end
+
+
 function NotSoFancyBisLoot.createItemWindow(itemLinks, option, open)
     
     --  If the window is already created and visible, return (do nothing)
@@ -81,27 +106,7 @@ function NotSoFancyBisLoot.createItemWindow(itemLinks, option, open)
             local itemLink = itemLinks[option][index]
 
             if itemLink ~= "" then
-                --  Create a button for the item
-                local button = CreateFrame("Button", nil, window)
-                button:SetSize(buttonSize, buttonSize)  -- Set the button size
-                button:SetPoint("TOPLEFT", window, "TOPLEFT", offsetX + (col - 1) * (buttonSize + spacing), offsetY - (row - 1) * (buttonSize + spacing))
-
-                --  Set the button icon using the item texture
-                local icon = button:CreateTexture(nil, "ARTWORK")
-                icon:SetAllPoints(button)  -- Make the icon fill the button
-                icon:SetTexture(GetItemIcon(itemLink))  -- Set the item's icon
-
-                --  Tooltip handling on mouse enter (when hovering over the button)
-                button:SetScript("OnEnter", function()
-                    GameTooltip:SetOwner(button, "ANCHOR_CURSOR_RIGHT")
-                    GameTooltip:SetHyperlink(itemLink)
-                    GameTooltip:Show()
-                end)
-
-                --  Hide the tooltip on mouse leave
-                button:SetScript("OnLeave", function()
-                    GameTooltip:Hide()
-                end)
+                NotSoFancyBisLoot.createItemButton(window, itemLink, col, row, buttonSize, spacing, offsetX, offsetY)
             end
         end
     end
