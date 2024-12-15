@@ -1,0 +1,8 @@
+## Interface: 100105
+## Title: Not so fancy bis loot
+## Notes: Shows not so pretty bis loot
+## Version: 1.0
+
+ItemData.lua
+LootWindow.lua
+NotSoFancyBisLoot.lua
